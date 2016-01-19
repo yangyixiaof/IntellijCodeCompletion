@@ -12,6 +12,8 @@ import org.eclipse.jdt.internal.codeassist.CompletionEngine;
 import org.eclipse.jdt.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jdt.internal.core.SearchableEnvironment;
+import org.eclipse.jdt.internal.ui.text.java.FillArgumentNamesCompletionProposalCollector;
+import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.jdt.ui.text.java.CompletionProposalCollector;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
@@ -25,24 +27,7 @@ public class SearchFunctionSpecification {
 		 * the prefix must be as the following form:
 		 * <form:System.out.>
 		 */
-		CompletionProposalCollector collector = new CompletionProposalCollector(javacontext.getCompilationUnit(), true);
-		collector.setInvocationContext(javacontext);
-
-		// Allow completions for unresolved types - since 3.3
-		collector.setAllowsRequiredProposals(CompletionProposal.FIELD_REF, CompletionProposal.TYPE_REF, true);
-		collector.setAllowsRequiredProposals(CompletionProposal.FIELD_REF, CompletionProposal.TYPE_IMPORT, true);
-		collector.setAllowsRequiredProposals(CompletionProposal.FIELD_REF, CompletionProposal.FIELD_IMPORT, true);
-
-		collector.setAllowsRequiredProposals(CompletionProposal.METHOD_REF, CompletionProposal.TYPE_REF, true);
-		collector.setAllowsRequiredProposals(CompletionProposal.METHOD_REF, CompletionProposal.TYPE_IMPORT, true);
-		collector.setAllowsRequiredProposals(CompletionProposal.METHOD_REF, CompletionProposal.METHOD_IMPORT, true);
-
-		collector.setAllowsRequiredProposals(CompletionProposal.CONSTRUCTOR_INVOCATION, CompletionProposal.TYPE_REF, true);
-
-		collector.setAllowsRequiredProposals(CompletionProposal.ANONYMOUS_CLASS_CONSTRUCTOR_INVOCATION, CompletionProposal.TYPE_REF, true);
-		collector.setAllowsRequiredProposals(CompletionProposal.ANONYMOUS_CLASS_DECLARATION, CompletionProposal.TYPE_REF, true);
-
-		collector.setAllowsRequiredProposals(CompletionProposal.TYPE_REF, CompletionProposal.TYPE_REF, true);
+		CompletionProposalCollector collector = GetProposalCollector(javacontext);
 		
 		int rawoffset = javacontext.getInvocationOffset();
 		int position = rawoffset + prefix.length();
@@ -81,6 +66,51 @@ public class SearchFunctionSpecification {
 		}
 		
 		// return proposals;
+	}
+	
+	private static CompletionProposalCollector GetProposalCollector(JavaContentAssistInvocationContext javacontext)
+	{
+		CompletionProposalCollector collector = null;
+		if (PreferenceConstants.getPreferenceStore().getBoolean(PreferenceConstants.CODEASSIST_FILL_ARGUMENT_NAMES))
+		{
+			collector = new FillArgumentNamesCompletionProposalCollector(javacontext);
+		}
+		else
+		{
+			collector = new CompletionProposalCollector(javacontext.getCompilationUnit(), true);
+		}
+		collector.setInvocationContext(javacontext);
+		collector.setIgnored(CompletionProposal.ANNOTATION_ATTRIBUTE_REF, false);
+		collector.setIgnored(CompletionProposal.ANONYMOUS_CLASS_DECLARATION, false);
+		collector.setIgnored(CompletionProposal.ANONYMOUS_CLASS_CONSTRUCTOR_INVOCATION, false);
+		collector.setIgnored(CompletionProposal.FIELD_REF, false);
+		collector.setIgnored(CompletionProposal.FIELD_REF_WITH_CASTED_RECEIVER, false);
+		collector.setIgnored(CompletionProposal.KEYWORD, false);
+		collector.setIgnored(CompletionProposal.LABEL_REF, false);
+		collector.setIgnored(CompletionProposal.LOCAL_VARIABLE_REF, false);
+		collector.setIgnored(CompletionProposal.METHOD_DECLARATION, false);
+		collector.setIgnored(CompletionProposal.METHOD_NAME_REFERENCE, false);
+		collector.setIgnored(CompletionProposal.METHOD_REF, false);
+		collector.setIgnored(CompletionProposal.CONSTRUCTOR_INVOCATION, false);
+		collector.setIgnored(CompletionProposal.METHOD_REF_WITH_CASTED_RECEIVER, false);
+		collector.setIgnored(CompletionProposal.PACKAGE_REF, false);
+		collector.setIgnored(CompletionProposal.POTENTIAL_METHOD_DECLARATION, false);
+		collector.setIgnored(CompletionProposal.VARIABLE_DECLARATION, false);
+		collector.setIgnored(CompletionProposal.TYPE_REF, false);
+
+		// Allow completions for unresolved types - since 3.3
+		collector.setAllowsRequiredProposals(CompletionProposal.FIELD_REF, CompletionProposal.TYPE_REF, true);
+		collector.setAllowsRequiredProposals(CompletionProposal.FIELD_REF, CompletionProposal.TYPE_IMPORT, true);
+		collector.setAllowsRequiredProposals(CompletionProposal.FIELD_REF, CompletionProposal.FIELD_IMPORT, true);
+		collector.setAllowsRequiredProposals(CompletionProposal.METHOD_REF, CompletionProposal.TYPE_REF, true);
+		collector.setAllowsRequiredProposals(CompletionProposal.METHOD_REF, CompletionProposal.TYPE_IMPORT, true);
+		collector.setAllowsRequiredProposals(CompletionProposal.METHOD_REF, CompletionProposal.METHOD_IMPORT, true);
+		collector.setAllowsRequiredProposals(CompletionProposal.CONSTRUCTOR_INVOCATION, CompletionProposal.TYPE_REF, true);
+		collector.setAllowsRequiredProposals(CompletionProposal.ANONYMOUS_CLASS_CONSTRUCTOR_INVOCATION, CompletionProposal.TYPE_REF, true);
+		collector.setAllowsRequiredProposals(CompletionProposal.ANONYMOUS_CLASS_DECLARATION, CompletionProposal.TYPE_REF, true);
+		collector.setAllowsRequiredProposals(CompletionProposal.TYPE_REF, CompletionProposal.TYPE_REF, true);
+		
+		return collector;
 	}
 	
 }
