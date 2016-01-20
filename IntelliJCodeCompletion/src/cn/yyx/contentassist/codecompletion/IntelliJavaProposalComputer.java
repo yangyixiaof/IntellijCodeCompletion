@@ -13,7 +13,7 @@ import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 
-import cn.yyx.contentassist.codehelper.SearchFunctionSpecification;
+import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;
 
 public class IntelliJavaProposalComputer implements IJavaCompletionProposalComputer {
 	
@@ -46,7 +46,7 @@ public class IntelliJavaProposalComputer implements IJavaCompletionProposalCompu
 					// System.err.println("jcc: " + javacontext.getDocument().get());
 					// ICompilationUnit sourceunit = javacontext.getCompilationUnit();
 					// System.out.println("sourceunit type: " + sourceunit.getClass());
-					SearchFunctionSpecification.SearchFunctionSpecificationByPrefix("SystemTest.", javacontext, monitor);
+					SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix("System.", javacontext, monitor);
 				}
 				else
 				{
