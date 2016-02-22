@@ -1,4 +1,4 @@
-package intellijcodecompletion;
+package cn.yyx.contentassist.intellijcodecompletion;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

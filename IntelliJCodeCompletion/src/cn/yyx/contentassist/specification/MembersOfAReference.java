@@ -3,7 +3,7 @@ package cn.yyx.contentassist.specification;
 import java.util.LinkedList;
 import java.util.List;
 
-import commonutils.ConstantVariable;
+import cn.yyx.contentassist.commonutils.ConstantVariable;
 
 public class MembersOfAReference {
 	

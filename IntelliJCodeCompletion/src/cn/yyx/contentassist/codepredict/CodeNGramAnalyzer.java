@@ -14,6 +14,7 @@ import cn.yyx.research.language.JDTHelper.ASTTraversal;
 
 public class CodeNGramAnalyzer {
 
+	@SuppressWarnings("unchecked")
 	public static ArrayList<String> PossibleCodes(JavaContentAssistInvocationContext javacontext) {
 		// TODO Auto-generated method stub
 		System.err.println("HaHa Test!!!!!!!!!!!!!!");

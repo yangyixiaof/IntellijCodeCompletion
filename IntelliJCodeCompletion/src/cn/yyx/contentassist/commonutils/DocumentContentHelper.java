@@ -1,4 +1,4 @@
-package commonutils;
+package cn.yyx.contentassist.commonutils;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;

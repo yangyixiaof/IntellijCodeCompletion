@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: IntelliJCodeCompletion
 Bundle-SymbolicName: IntelliCC;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: intellijcodecompletion.Activator
+Bundle-Activator: cn.yyx.contentassist.intellijcodecompletion.Activator
 Bundle-Vendor: yyx
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

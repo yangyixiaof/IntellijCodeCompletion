@@ -1,4 +1,4 @@
-package commonutils;
+package cn.yyx.contentassist.commonutils;
 
 import java.util.ArrayList;
 import java.util.Iterator;

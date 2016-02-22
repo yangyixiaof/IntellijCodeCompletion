@@ -11,8 +11,8 @@ import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
 import cn.yyx.contentassist.codecompletion.IntelliJavaProposalComputer;
-import commonutils.DocumentContentHelper;
-import commonutils.ProposalHelper;
+import cn.yyx.contentassist.commonutils.DocumentContentHelper;
+import cn.yyx.contentassist.commonutils.ProposalHelper;
 
 public class CodePredictUtil implements CodePredict {
 
