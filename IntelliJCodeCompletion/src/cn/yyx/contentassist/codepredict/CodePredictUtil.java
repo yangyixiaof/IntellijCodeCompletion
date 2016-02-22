@@ -29,7 +29,7 @@ public class CodePredictUtil implements CodePredict {
 			IDocument doc = javacontext.getDocument();
 			int offset = javacontext.getInvocationOffset();
 			char lastchar = DocumentContentHelper.GetOffsetLastChar(doc, offset);
-			if (lastchar == ';' || lastchar == '}' || lastchar == '{' ) {
+			if (lastchar == ';' || lastchar == '}' || lastchar == '{') {
 				// detailed completion will be realized later. this is difficult in technique.
 				//  || lastchar == ',' || lastchar == '(' || lastchar == ')'
 				ArrayList<String> proposalcnt = CodeNGramAnalyzer.PossibleCodes(javacontext);
