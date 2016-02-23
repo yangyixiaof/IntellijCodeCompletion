@@ -1,8 +1,10 @@
 package cn.yyx.contentassist.commonutils;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.AnnotationTypeMemberDeclaration;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
@@ -57,10 +59,10 @@ public class ASTTreeReducer {
 				break;
 			}
 		}
-		Iterator<BodyDeclaration> itr = bds.iterator();
-		while (itr.hasNext())
+		Iterator<BodyDeclaration> itr3 = bds.iterator();
+		while (itr3.hasNext())
 		{
-			BodyDeclaration bd = itr.next();
+			BodyDeclaration bd = itr3.next();
 			if (onlyRetainField && IsRawBlockBody(bd))
 			{
 				bd.delete();
@@ -73,7 +75,15 @@ public class ASTTreeReducer {
 				}
 				else
 				{
-					bd.accept(new DetailedASTTreeReducerVisitor(offset));
+					List<ASTNode> needToDelete = new ArrayList<ASTNode>();
+					bd.accept(new DetailedASTTreeReducerVisitor(offset, needToDelete));
+					Iterator<ASTNode> itr = needToDelete.iterator();
+					while (itr.hasNext())
+					{
+						ASTNode an = itr.next();
+						an.delete();
+					}
+					needToDelete.clear();
 				}
 			}
 		}
