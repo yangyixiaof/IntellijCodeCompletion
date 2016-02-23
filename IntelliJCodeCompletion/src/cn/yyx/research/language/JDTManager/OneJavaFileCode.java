@@ -2,7 +2,7 @@ package cn.yyx.research.language.JDTManager;
 
 import cn.yyx.research.language.simplified.JDTManager.JavaCode;
 
-public class OneJavaFileCode implements JavaCode{
+public class OneJavaFileCode extends JavaCode{
 	
 	StringBuilder sb = new StringBuilder("");
 	
@@ -11,7 +11,7 @@ public class OneJavaFileCode implements JavaCode{
 	
 	public void AddOneMethodNodeCode(NodeCode nc)
 	{
-		AddOneNodeCode(nc, sb);
+		AddOneNodeCode(nc);
 	}
 	
 	public void OneSentenceEnd()
@@ -21,16 +21,6 @@ public class OneJavaFileCode implements JavaCode{
 		{
 			sb.append(".");
 		}*/
-	}
-	
-	@Override
-	public String toString() {
-		return sb.toString();
-	}
-
-	@Override
-	public boolean IsEmpty() {
-		return sb.length() == 0;
 	}
 	
 }

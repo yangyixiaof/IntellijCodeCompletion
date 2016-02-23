@@ -1,6 +1,5 @@
 package cn.yyx.research.language.simplified.JDTHelper;
 
-import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.Initializer;
@@ -16,18 +15,23 @@ public class SimplifiedFieldProcessASTVisitor extends SimplifiedCodeGenerateASTV
 	public SimplifiedFieldProcessASTVisitor(SimplifiedCodeGenerateASTVisitor scga) {
 		ocm = scga.ocm;
 		ojfc = scga.ojfc;
-		ojfacc = scga.ojfacc;
+		jc = scga.jc;
 		mw = scga.mw;
+		acp = scga.acp;
 		fotp = scga.fotp;
 		sdm = scga.sdm;
 		cjcs = scga.cjcs;
 		ljcs = scga.ljcs;
+		FirstLevelClass = scga.FirstLevelClass;
 		berefered = scga.berefered;
 		bereferedAlready = scga.bereferedAlready;
 		referedcnt = scga.referedcnt;
 		referhint = scga.referhint;
+		refernoline = scga.refernoline;
 		runpermit = scga.runpermit;
 		runforbid = scga.runforbid;
+		typesimp = scga.typesimp;
+		omcanonystack = scga.omcanonystack;
 		argmutiple = scga.argmutiple;
 		omc = scga.omc;
 	}
@@ -68,7 +72,7 @@ public class SimplifiedFieldProcessASTVisitor extends SimplifiedCodeGenerateASTV
 	public void endVisit(EnumDeclaration node) {
 	}
 	
-	@Override
+	/*@Override
 	public boolean visit(AnonymousClassDeclaration node) {
 		boolean ifcontinue = HandleCurrentLevelControl(node.hashCode());
 		if (ifcontinue)
@@ -80,7 +84,8 @@ public class SimplifiedFieldProcessASTVisitor extends SimplifiedCodeGenerateASTV
 	
 	@Override
 	public void endVisit(AnonymousClassDeclaration node) {
-	}
+		jc = ojfc;
+	}*/
 	
 	@Override
 	public boolean visit(FieldDeclaration node) {

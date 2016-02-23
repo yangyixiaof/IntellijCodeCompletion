@@ -1,15 +1,19 @@
 package cn.yyx.research.language.simplified.JDTManager;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import cn.yyx.research.language.JDTManager.GCodeMetaInfo;
 import cn.yyx.research.language.JDTManager.NodeCode;
 
-public interface JavaCode {
-	public void AddOneMethodNodeCode(NodeCode nc);
-	public void OneSentenceEnd();
-	public boolean IsEmpty();
-	public default void AddOneNodeCode(NodeCode nc, StringBuilder sb)
+public abstract class JavaCode {
+	
+	protected StringBuilder sb = new StringBuilder("");
+	protected ArrayList<String> codes = new ArrayList<String>();
+	
+	public abstract void AddOneMethodNodeCode(NodeCode nc);
+	public abstract void OneSentenceEnd();
+	public void AddOneNodeCode(NodeCode nc)
 	{
 		Iterator<String> itr = nc.GetCodeIterator();
 		String prestr = null;
@@ -19,9 +23,25 @@ public interface JavaCode {
 			CheckAllHavePrefixHint(onesentence, prestr);
 			prestr = onesentence;
 			sb.append(" " + onesentence);
+			codes.add(onesentence);
 		}
 	}
-	public default void CheckAllHavePrefixHint(String onesentence, String prestr)
+	
+	public boolean IsEmpty() {
+		return sb.length() == 0;
+	}
+	
+	@Override
+	public String toString() {
+		return sb.toString();
+	}
+	
+	public ArrayList<String> toList()
+	{
+		return codes;
+	}
+	
+	public void CheckAllHavePrefixHint(String onesentence, String prestr)
 	{
 		int atidx = onesentence.indexOf('@');
 		if (atidx < 0)
@@ -32,7 +52,8 @@ public interface JavaCode {
 		String prefixhint = onesentence.substring(0, atidx+1);
 		switch (prefixhint)
 		{
-			case GCodeMetaInfo.AnonymousClassHintStatement:
+			case GCodeMetaInfo.AnonymousClassBegin:
+			case GCodeMetaInfo.AnonymousClassPreHint:
 			case GCodeMetaInfo.ClassDeclarationHint:
 			case GCodeMetaInfo.ClassInnerDeclarationHint:
 			case GCodeMetaInfo.EnumDeclarationHint:

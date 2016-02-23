@@ -1,28 +1,31 @@
 package cn.yyx.research.language.JDTManager;
 
+import java.util.ArrayList;
+
 import cn.yyx.research.language.simplified.JDTManager.JavaCode;
 
-public class OneJavaFileAnonymousClassesCode implements JavaCode{
+public class OneJavaFileAnonymousClassesCode extends JavaCode {
 	
-	StringBuilder sb = new StringBuilder("");
-	MethodWindow mw = null;
+	String mwcontent = null;
+	ArrayList<String> codelist = null;
 	
 	public OneJavaFileAnonymousClassesCode() {
 	}
 	
 	public void AddPreDeclrations(MethodWindow mw)
 	{
-		this.mw = mw;
+		mwcontent = mw.toString();
+		codelist = mw.toList();
 	}
 	
 	public void AddOneMethodNodeCode(NodeCode nc)
 	{
-		if (mw != null)
+		if (mwcontent != null)
 		{
-			sb.append(mw);
-			mw = null;
+			sb.append(mwcontent);
+			codes.addAll(codelist);
 		}
-		AddOneNodeCode(nc, sb);
+		AddOneNodeCode(nc);
 	}
 	
 	public void OneSentenceEnd()
@@ -32,16 +35,6 @@ public class OneJavaFileAnonymousClassesCode implements JavaCode{
 		{
 			sb.append(".");
 		}*/
-	}
-	
-	@Override
-	public String toString() {
-		return sb.toString();
-	}
-
-	@Override
-	public boolean IsEmpty() {
-		return sb.length() == 0;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package cn.yyx.research.language.simplified.JDTHelper;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import cn.yyx.research.language.JDTManager.OtherCodeManager;
 import cn.yyx.research.language.JDTManager.ReferenceHintLibrary;
 import cn.yyx.research.language.JDTManager.ScopeDataManager;
 import cn.yyx.research.language.Utility.MyLogger;
+import cn.yyx.research.language.simplified.JDTManager.AnonymousClassPoolInOneJavaFile;
 import cn.yyx.research.language.simplified.JDTManager.ConflictASTNodeHashCodeError;
 import cn.yyx.research.language.simplified.JDTManager.JavaCode;
 
@@ -29,9 +31,9 @@ public class SimplifiedCodeGenerateASTVisitor extends ASTVisitor {
 
 	protected OtherCodeManager ocm = new OtherCodeManager();
 	protected OneJavaFileCode ojfc = new OneJavaFileCode();
-	protected OneJavaFileAnonymousClassesCode ojfacc = new OneJavaFileAnonymousClassesCode();
 	protected JavaCode jc = ojfc;
 	protected MethodWindow mw = new MethodWindow();
+	protected AnonymousClassPoolInOneJavaFile acp = new AnonymousClassPoolInOneJavaFile();
 	protected FirstOrderTaskPool fotp = new FirstOrderTaskPool();
 	protected ScopeDataManager sdm = new ScopeDataManager();
 	protected JCScope cjcs = new JCScope();
@@ -58,7 +60,7 @@ public class SimplifiedCodeGenerateASTVisitor extends ASTVisitor {
 		cjcs.SetDescription("Class Declaration.");
 		ljcs.SetDescription("Label Declaration.");
 	}
-
+	
 	@Override
 	public void preVisit(ASTNode node) {
 		fotp.PostIsBegin(node);
@@ -256,9 +258,9 @@ public class SimplifiedCodeGenerateASTVisitor extends ASTVisitor {
 		// MyLogger.Info(node);
 		// MyLogger.Info("AnonymousClassDeclaration End");
 		EnterBlock(node);
+		jc = acp.EnterAnonymousClass(mw);
 		omcanonystack.push(omc);
 		omc = new NodeCode(argmutiple);
-		jc = ojfacc;
 		AnonymousClassDeclarationCodeFileAddMethodWindow();
 		SimplifiedFieldProcessASTVisitor sfpa = new SimplifiedFieldProcessASTVisitor(this);
 		node.accept(sfpa);
@@ -273,6 +275,7 @@ public class SimplifiedCodeGenerateASTVisitor extends ASTVisitor {
 			omc = (new NodeCode(argmutiple));
 		}
 		jc = ojfc;
+		acp.ExitAnonymousClass();
 		ExitBlock(node);
 	}
 
@@ -1251,6 +1254,7 @@ public class SimplifiedCodeGenerateASTVisitor extends ASTVisitor {
 	public boolean visit(ClassInstanceCreation node) {
 		// MyLogger.Info("Node Type:"+node.getType());
 		// MyLogger.Info("Body:"+node.getAnonymousClassDeclaration());
+		OneMethodInvocationOccurs(TypeCode(node.getType(), true));
 		MethodPushReferRequest(node.getExpression(), node.arguments());
 		return super.visit(node);
 	}
@@ -1320,6 +1324,7 @@ public class SimplifiedCodeGenerateASTVisitor extends ASTVisitor {
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean visit(SuperMethodInvocation node) {
+		OneMethodInvocationOccurs(node.getName().toString());
 		MethodPushReferRequest(null, node.arguments());
 		runforbid.AddNodeHelp(node.getName().hashCode(), true);
 		if (node.getQualifier() != null) {
@@ -1350,6 +1355,7 @@ public class SimplifiedCodeGenerateASTVisitor extends ASTVisitor {
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean visit(MethodInvocation node) {
+		OneMethodInvocationOccurs(node.getName().toString());
 		MethodPushReferRequest(node.getExpression(), node.arguments());
 		runforbid.AddNodeHelp(node.getName().hashCode(), true);
 		return super.visit(node);
@@ -2114,7 +2120,7 @@ public class SimplifiedCodeGenerateASTVisitor extends ASTVisitor {
 	}
 
 	protected void AnonymousClassDeclarationCodeFileAddMethodWindow() {
-		ojfacc.AddPreDeclrations(mw);
+		((OneJavaFileAnonymousClassesCode)jc).AddPreDeclrations(mw);
 	}
 
 	protected void OneMethodInvocationOccurs(String rawmethodname) {
@@ -2404,11 +2410,16 @@ public class SimplifiedCodeGenerateASTVisitor extends ASTVisitor {
 	public Map<String, String> GetGeneratedCode() {
 		Map<String, String> result = new TreeMap<String, String>();
 		result.putAll(ocm.getOtherCodeMap());
-		if (!ojfacc.IsEmpty()) {
-			result.put(GCodeMetaInfo.AnonymousLogicCorpus, ojfacc.toString());
-		}
+		StringBuilder sb = new StringBuilder("");
 		if (!ojfc.IsEmpty()) {
-			result.put(GCodeMetaInfo.LogicCorpus, ojfc.toString());
+			sb.append(ojfc.toString());
+		}
+		if (!acp.IsEmpty()) {
+			sb.append(acp.toString());
+		}
+		if (sb.length() > 0)
+		{
+			result.put(GCodeMetaInfo.LogicCorpus, sb.toString());
 		}
 		return result;
 	}
@@ -2610,6 +2621,18 @@ public class SimplifiedCodeGenerateASTVisitor extends ASTVisitor {
 
 	protected void ResetDLM() {
 		sdm.ResetCurrentClassField();
+	}
+	
+
+	public ArrayList<String> GetMainAnalyseList(boolean isInAnonymous) {
+		if (isInAnonymous)
+		{
+			return acp.GetRecentAnalyseList();
+		}
+		else
+		{
+			return ojfc.toList();
+		}
 	}
 
 }

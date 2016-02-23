@@ -1,7 +1,6 @@
 package cn.yyx.contentassist.codepredict;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
@@ -44,9 +43,9 @@ public class CodeNGramAnalyzer {
 			
 			SimplifiedCodeGenerateASTVisitor fmastv = new SimplifiedCodeGenerateASTVisitor();
 			atype.accept(fmastv);
-			Map<String, String> codemap = fmastv.GetGeneratedCode();
+			ArrayList<String> analist = fmastv.GetMainAnalyseList(aoi.isInAnonymousClass());
 			
-			
+			PredictionFetch.FetchPrediction(analist, list);
 			
 		} catch (JavaModelException e) {
 			e.printStackTrace();
