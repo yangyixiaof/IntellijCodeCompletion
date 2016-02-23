@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 public class ASTTreeReducer {
 	
 	@SuppressWarnings("unchecked")
-	public static AbstractTypeDeclaration GetSimplifiedContent(List<AbstractTypeDeclaration> types, int offset)
+	public static AbstractTypeDeclaration GetSimplifiedContent(List<AbstractTypeDeclaration> types, int offset, ASTOffsetInfo aoi)
 	{
 		for (AbstractTypeDeclaration at : types)
 		{
@@ -25,7 +25,7 @@ public class ASTTreeReducer {
 			if (offset >= tstart && offset < tend)
 			{
 				List<BodyDeclaration> bds = at.bodyDeclarations();
-				OneClassNecessaryContentRetain(bds, offset, at);
+				OneClassNecessaryContentRetain(bds, offset, at, aoi);
 				return at;
 			}
 			// System.out.println("type:"+at.getName().toString()+";start pos:"+start+";endpos:"+end+";invokeoffset:"+offset);
@@ -33,7 +33,7 @@ public class ASTTreeReducer {
 		return null;
 	}
 	
-	private static void OneClassNecessaryContentRetain(List<BodyDeclaration> bds, int offset, AbstractTypeDeclaration parent)
+	private static void OneClassNecessaryContentRetain(List<BodyDeclaration> bds, int offset, AbstractTypeDeclaration parent, ASTOffsetInfo aoi)
 	{
 		Iterator<BodyDeclaration> itr2 = bds.iterator();
 		boolean onlyRetainField = false;
@@ -45,6 +45,7 @@ public class ASTTreeReducer {
 			{
 				// field.
 				onlyRetainField = true;
+				aoi.setInFieldLevel(true);
 				break;
 			}
 			if (offset < bd.getStartPosition() + bd.getLength())
@@ -76,7 +77,7 @@ public class ASTTreeReducer {
 				else
 				{
 					List<ASTNode> needToDelete = new ArrayList<ASTNode>();
-					bd.accept(new DetailedASTTreeReducerVisitor(offset, needToDelete));
+					bd.accept(new DetailedASTTreeReducerVisitor(offset, needToDelete, aoi));
 					Iterator<ASTNode> itr = needToDelete.iterator();
 					while (itr.hasNext())
 					{

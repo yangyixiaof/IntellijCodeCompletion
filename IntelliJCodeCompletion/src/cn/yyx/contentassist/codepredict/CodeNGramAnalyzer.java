@@ -1,6 +1,7 @@
 package cn.yyx.contentassist.codepredict;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
@@ -9,8 +10,10 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.IDocument;
 
+import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.contentassist.commonutils.ASTTreeReducer;
 import cn.yyx.research.language.JDTHelper.ASTTraversal;
+import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVisitor;
 
 public class CodeNGramAnalyzer {
 
@@ -28,11 +31,22 @@ public class CodeNGramAnalyzer {
 			IDocument doc = javacontext.getDocument();
 			ASTTraversal astmdf = new ASTTraversal(javaname, doc.get());
 			CompilationUnit cu = astmdf.getCompilationUnit();
-			AbstractTypeDeclaration atype = ASTTreeReducer.GetSimplifiedContent(cu.types(), offset);
+			ASTOffsetInfo aoi = new ASTOffsetInfo();
+			AbstractTypeDeclaration atype = ASTTreeReducer.GetSimplifiedContent(cu.types(), offset, aoi);
+			if (atype == null)
+			{
+				return list;
+			}
 			
-			System.err.println("Document:" + doc.get());
-			System.err.println("========================== ==========================");
-			System.err.println("RetainedDocument:" + atype.toString());
+			// System.err.println("Document:" + doc.get());
+			// System.err.println("========================== ==========================");
+			// System.err.println("RetainedDocument:" + atype.toString());
+			
+			SimplifiedCodeGenerateASTVisitor fmastv = new SimplifiedCodeGenerateASTVisitor();
+			atype.accept(fmastv);
+			Map<String, String> codemap = fmastv.GetGeneratedCode();
+			
+			
 			
 		} catch (JavaModelException e) {
 			e.printStackTrace();
