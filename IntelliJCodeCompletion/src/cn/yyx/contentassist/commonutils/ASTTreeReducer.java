@@ -73,7 +73,7 @@ public class ASTTreeReducer {
 				}
 				else
 				{
-					
+					bd.accept(new DetailedASTTreeReducerVisitor(offset));
 				}
 			}
 		}
