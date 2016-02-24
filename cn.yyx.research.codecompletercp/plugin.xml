@@ -8,10 +8,6 @@
             name="cn.yyx.research.codecompletercp"
             application="org.eclipse.ui.ide.workbench">
          <property
-               name="applicationCSS"
-               value="platform:/plugin/cn.yyx.research.codecompletercp/css/default.css">
-         </property>
-         <property
                name="appName"
                value="cn.yyx.research.codecompletercp">
          </property>
