@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cn.yyx.researchtool</groupId>
+		<artifactId>cn.yyx.research.codecomplete</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../cn.yyx.research.codecomplete</relativePath>
+	</parent>
+	<artifactId>cn.yyx.research.codecompletercp</artifactId>
+	<packaging>eclipse-plugin</packaging>
+</project> 
