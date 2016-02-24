@@ -16,5 +16,7 @@
 	<modules>
 		<module>../cn.yyx.research.codecompletefeature</module>
 		<module>../cn.yyx.research.intellijcodecompletion</module>
+		<module>../cn.yyx.research.codecompletercp</module>
+		<module>../cn.yyx.research.codecompleteproduct</module>
 	</modules>
 </project> 
