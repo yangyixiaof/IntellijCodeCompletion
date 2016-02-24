@@ -111,5 +111,10 @@
       <plugin id="org.w3c.dom.svg"/>
    </plugins>
 
+   <configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="false" startLevel="2" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="false" startLevel="3" />
+      <plugin id="org.eclipse.equinox.event" autoStart="false" startLevel="3" />
+   </configurations>
 
 </product>
