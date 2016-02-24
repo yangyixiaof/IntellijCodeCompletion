@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: IntelliJCodeCompletion
-Bundle-SymbolicName: IntelliCC;singleton:=true
+Bundle-SymbolicName: cn.yyx.research.intellijcodecompletion;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: cn.yyx.contentassist.intellijcodecompletion.Activator
 Bundle-Vendor: yyx
