@@ -9,4 +9,4 @@
 	</parent>
 	<artifactId>cn.yyx.research.intellijcodecompletion</artifactId>
 	<packaging>eclipse-plugin</packaging>
-	</project> 
+</project> 
