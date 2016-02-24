@@ -10,7 +10,7 @@
 	<artifactId>cn.yyx.research.intellijcodecompletion</artifactId>
 	<packaging>eclipse-plugin</packaging>
 	
-	<name>IntelliJCodeCompletion</name>
+	<name>cn.yyx.research.intellijcodecompletion</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
