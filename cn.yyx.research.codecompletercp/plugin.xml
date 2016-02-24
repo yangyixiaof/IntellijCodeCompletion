@@ -6,7 +6,7 @@
          point="org.eclipse.core.runtime.products">
       <product
             name="cn.yyx.research.codecompletercp"
-            application="org.eclipse.e4.ui.workbench.swt.E4Application">
+            application="org.eclipse.ui.ide.workbench">
          <property
                name="applicationCSS"
                value="platform:/plugin/cn.yyx.research.codecompletercp/css/default.css">
